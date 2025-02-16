@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.thisissvikas.currency_converter.CurrencyConverterApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-02-16T11:53:44" hostname="Vikass-MacBook-Pro.local" time="0.712">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.thisissvikas.currency_converter.CurrencyConverterApplicationTests" time="0.712"/>
+  <system-out><![CDATA[17:23:43.811 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.thisissvikas.currency_converter.CurrencyConverterApplicationTests]: CurrencyConverterApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+17:23:43.858 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.thisissvikas.currency_converter.CurrencyConverterApplication for test class com.thisissvikas.currency_converter.CurrencyConverterApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.2)
+
+2025-02-16T17:23:44.043+05:30  INFO 32234 --- [currency-converter] [    Test worker] c.t.c.CurrencyConverterApplicationTests  : Starting CurrencyConverterApplicationTests using Java 21.0.4 with PID 32234 (started by vikas in /Users/vikas/vikas/repo/open_source/currency-converter/backend)
+2025-02-16T17:23:44.044+05:30  INFO 32234 --- [currency-converter] [    Test worker] c.t.c.CurrencyConverterApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2025-02-16T17:23:44.520+05:30  INFO 32234 --- [currency-converter] [    Test worker] c.t.c.CurrencyConverterApplicationTests  : Started CurrencyConverterApplicationTests in 0.6 seconds (process running for 1.178)
+]]></system-out>
+  <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/vikas/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.15.11/a38b16385e867f59a641330f0362ebe742788ed8/byte-buddy-agent-1.15.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>

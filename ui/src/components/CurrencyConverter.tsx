@@ -1,23 +1,43 @@
 import { useState, useEffect } from "react";
 import { TextField, MenuItem, Typography, Box, Paper } from "@mui/material";
 
+const API_BASE_URL = "http://localhost:8080/api/currency";
+
 const CurrencyConverter = () => {
   const [amount, setAmount] = useState(1);
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("INR");
   const [convertedAmount, setConvertedAmount] = useState<string | null>(null);
+  const [currencies, setCurrencies] = useState<string[]>([]);
 
-  const currencies = ["USD", "EUR", "INR", "GBP", "AUD"]; // Add more if needed
-
+  // Fetch the supported currencies from backend
   useEffect(() => {
-    if (amount > 0) {
-      fetch(
-        `https://api.exchangerate.host/convert?from=${fromCurrency}&to=${toCurrency}&amount=${amount}`
-      )
+    fetch(`${API_BASE_URL}/supported-currencies`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCurrencies(data); // Assuming backend returns an array of strings
+      })
+      .catch((error) => {
+        console.error("Error fetching supported currencies:", error);
+      });
+  }, []);
+
+  // Fetch conversion result when inputs change
+  useEffect(() => {
+    if (amount > 0 && fromCurrency && toCurrency) {
+      fetch(`${API_BASE_URL}/conversion`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sourceCurrency: fromCurrency,
+          targetCurrency: toCurrency,
+          amount,
+        }),
+      })
         .then((res) => res.json())
         .then((data) => {
-          if (data.result) {
-            setConvertedAmount(data.result.toFixed(2)); // Round to 2 decimal places
+          if (data.conversionResultValue) {
+            setConvertedAmount(data.conversionResultValue.toFixed(2)); // Round to 2 decimal places
           } else {
             setConvertedAmount(null);
           }
