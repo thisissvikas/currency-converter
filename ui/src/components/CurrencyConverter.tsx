@@ -1,53 +1,40 @@
 import { useState, useEffect } from "react";
-import { TextField, MenuItem, Typography, Box, Paper } from "@mui/material";
-
-const API_BASE_URL = "http://localhost:8080/api/currency";
+import { TextField, MenuItem, Typography, Box, Paper, Button } from "@mui/material";
 
 const CurrencyConverter = () => {
   const [amount, setAmount] = useState(1);
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("INR");
   const [convertedAmount, setConvertedAmount] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const [currencies, setCurrencies] = useState<string[]>([]);
 
-  // Fetch the supported currencies from backend
+  // Fetch supported currencies on mount
   useEffect(() => {
-    fetch(`${API_BASE_URL}/supported-currencies`)
+    fetch("http://localhost:8080/api/currency/supported-currencies")
       .then((res) => res.json())
-      .then((data) => {
-        setCurrencies(data); // Assuming backend returns an array of strings
-      })
-      .catch((error) => {
-        console.error("Error fetching supported currencies:", error);
-      });
+      .then((data) => setCurrencies(data))
+      .catch((error) => console.error("Error fetching currencies:", error));
   }, []);
 
-  // Fetch conversion result when inputs change
-  useEffect(() => {
-    if (amount > 0 && fromCurrency && toCurrency) {
-      fetch(`${API_BASE_URL}/conversion`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sourceCurrency: fromCurrency,
-          targetCurrency: toCurrency,
-          amount,
-        }),
+  const handleConvert = () => {
+    setLoading(true);
+    fetch("http://localhost:8080/api/currency/conversion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sourceCurrency: fromCurrency, targetCurrency: toCurrency, amount }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setConvertedAmount(data.conversionResultValue.toFixed(2));
       })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.conversionResultValue) {
-            setConvertedAmount(data.conversionResultValue.toFixed(2)); // Round to 2 decimal places
-          } else {
-            setConvertedAmount(null);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching exchange rate:", error);
-          setConvertedAmount(null);
-        });
-    }
-  }, [amount, fromCurrency, toCurrency]);
+      .catch((error) => {
+        console.error("Error fetching exchange rate:", error);
+        setConvertedAmount(null);
+      })
+      .finally(() => setLoading(false));
+  };
 
   return (
     <Box sx={{ maxWidth: 400, mx: "auto", mt: 4, textAlign: "center" }}>
@@ -96,6 +83,11 @@ const CurrencyConverter = () => {
           </MenuItem>
         ))}
       </TextField>
+
+      {/* Convert Button */}
+      <Button variant="contained" color="primary" onClick={handleConvert} fullWidth sx={{ mt: 2 }} disabled={loading}>
+        {loading ? "Converting..." : "Convert"}
+      </Button>
 
       {/* Converted Amount Display */}
       {convertedAmount !== null && (
