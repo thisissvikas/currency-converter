@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Currency Converter API
+  description: API to convert currency between different currencies
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+    description: Local Development Server
+paths:
+  /currency/supported-currencies:
+    get:
+      summary: Get list of supported currencies
+      description: Fetches a list of available currency codes
+      operationId: getSupportedCurrencies
+      responses:
+        "200":
+          description: List of supported currencies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currencies:
+                    type: array
+                    items:
+                      type: string
+                    example: [ "USD", "EUR", "INR", "GBP", "JPY", "CAD" ]
+        "500":
+          description: Internal server error
+  /currency/conversion:
+    get:
+      summary: Convert currency
+      description: Converts an amount from one currency to another
+      operationId: convertCurrency
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The currency to convert from (e.g., USD)
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The currency to convert to (e.g., INR)
+        - name: amount
+          in: query
+          required: true
+          schema:
+            type: number
+          description: The amount to convert
+      responses:
+        "200":
+          description: Successfully converted the currency
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  from:
+                    type: string
+                    example: USD
+                  to:
+                    type: string
+                    example: INR
+                  amount:
+                    type: number
+                    example: 1
+                  convertedAmount:
+                    type: number
+                    example: 83.50
+        "400":
+          description: Invalid input parameters
+        "500":
+          description: Internal server error
